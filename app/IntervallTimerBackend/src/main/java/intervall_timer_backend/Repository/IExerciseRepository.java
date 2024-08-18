@@ -1,4 +1,7 @@
 package intervall_timer_backend.Repository;
 
-public interface IExerciseRepository {
+import intervall_timer_backend.DataAcessModel.ExerciseDA;
+import org.springframework.data.repository.CrudRepository;
+
+public interface IExerciseRepository extends CrudRepository<ExerciseDA, Long> {
 }

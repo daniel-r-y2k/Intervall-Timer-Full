@@ -77,7 +77,7 @@ public class ExerciseController implements IBaseController<ExerciseDT> {
     }
 
     @PostMapping("delete")
-    public BaseControllerResponse<ExerciseDT> delete(long id) {
+    public BaseControllerResponse<ExerciseDT> delete(@RequestBody long id) {
         BaseControllerResponse<ExerciseDT> response = new BaseControllerResponse<>();
         try{
             this.exerciseLogic.delete(id);

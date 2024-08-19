@@ -8,10 +8,10 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface ExerciseService {
-    static String baseServiceURL = "exercise/";
-    static String getAllURL = baseServiceURL + "getAll";
-    static String saveExerciseURL = baseServiceURL + "newExercise";
-    static String deleteExerciseURL = baseServiceURL + "delete";
+    String baseServiceURL = "exercise/";
+    String getAllURL = baseServiceURL + "getAll";
+    String saveExerciseURL = baseServiceURL + "newExercise";
+    String deleteExerciseURL = baseServiceURL + "delete";
 
 
 

@@ -146,9 +146,12 @@ public class MainActivity extends AppCompatActivity implements ExerciseAdapter.C
 
     @Override
     public void ClickedExercise(Exercise exercise) {
-        //
+        String toastMsg = "Übung " + exercise.getName() + " wird geöffnet";
+        Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+        Intent exerciseDetailsIntent = new Intent(this, ExerciseDetailsActivity.class)
+                .putExtra(EXERCISEDETAILKEY, exercise);
+        startActivity(exerciseDetailsIntent);
     }
-
     public void saveExercise(String name, int repCount, int lapTime, int lapBreaktime, int startCountdown) {
         Exercise createdExercise = new Exercise(name, repCount, lapTime, lapBreaktime, startCountdown);
         Call<ServiceResponse<Exercise>> save = ApiClient.getExerciseService().save(createdExercise);

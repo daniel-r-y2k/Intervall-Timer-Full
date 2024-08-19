@@ -19,6 +19,7 @@ import com.example.intervalltimerfrontend.Adapter.ExerciseAdapter;
 import com.example.intervalltimerfrontend.Dialog.ExerciseDialog;
 import com.example.intervalltimerfrontend.Model.Exercise;
 import com.example.intervalltimerfrontend.Service.ApiClient;
+import com.example.intervalltimerfrontend.Service.ExerciseService;
 import com.example.intervalltimerfrontend.Service.Response.ServiceResponse;
 import com.example.intervalltimerfrontend.databinding.ActivityMainBinding;
 import retrofit2.Call;

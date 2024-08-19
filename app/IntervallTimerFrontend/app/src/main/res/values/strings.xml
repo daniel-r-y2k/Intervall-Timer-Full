@@ -7,4 +7,15 @@
 
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+
+    <string name="create_new_exercise">Create new Exercise</string>
+    <string name="edit_exercise">Edit Exercise</string>
+    <string name="new_exercise_dialog_title">Neue Übung erstellen</string>
+    <string name="edit_exercise_dialog_title">Übung bearbeiten</string>
+
+    <string name="error_field_empty">Feld darf nicht leer sein</string>
+    <string name="error_long_name">Name ist zu lang</string>
+    <string name="error_big_number">Unrealistisch hohe Eingabe</string>
+
+    <string name="check_data">Überprüfen Sie die eingegebenen Daten</string>
 </resources>

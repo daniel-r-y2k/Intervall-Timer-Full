@@ -70,12 +70,12 @@ public class MainActivity extends AppCompatActivity implements ExerciseDialog.Cr
 
     private void openCreationDialog() {
         exerciseDialog = new ExerciseDialog();
-        exerciseDialog.show(getSupportFragmentManager(), "Create new Exercise");
+        exerciseDialog.show(getSupportFragmentManager(), String.valueOf(R.string.create_new_exercise));
     }
 
     public void openEditDialog(Exercise exercise) {
         exerciseDialog = new ExerciseDialog(exercise);
-        exerciseDialog.show(getSupportFragmentManager(), "Edit Exercise");
+        exerciseDialog.show(getSupportFragmentManager(), String.valueOf(R.string.edit_exercise));
     }
 
     public void onSave(View v) {

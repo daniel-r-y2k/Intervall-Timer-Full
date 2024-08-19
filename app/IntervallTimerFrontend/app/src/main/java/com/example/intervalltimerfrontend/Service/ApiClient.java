@@ -18,15 +18,12 @@ public class ApiClient {
 
     public static Retrofit getClient() {
         // Erstellen des Interceptors für Basic Authentication
-        Interceptor authInterceptor = new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request request = chain.request();
-                Request authenticatedRequest = request.newBuilder()
-                        .header("Authorization", Credentials.basic(USERNAME, PASSWORD))
-                        .build();
-                return chain.proceed(authenticatedRequest);
-            }
+        Interceptor authInterceptor = chain -> {
+            Request request = chain.request();
+            Request authenticatedRequest = request.newBuilder()
+                    .header("Authorization", Credentials.basic(USERNAME, PASSWORD))
+                    .build();
+            return chain.proceed(authenticatedRequest);
         };
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()

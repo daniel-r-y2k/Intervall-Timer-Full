@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements ExerciseAdapter.C
             public void onResponse(Call<ServiceResponse<Exercise>> call, Response<ServiceResponse<Exercise>> response) {
                 if(response.isSuccessful()) {
                     getAllExercises();
-                    String toastMsg = "Übung " + exercise.getName() + " wurde erfolgreich gelöscht";
+                    String toastMsg = getString(R.string.successfully_deleted_exercise, exercise.getName());//"Übung " + exercise.getName() + " wurde erfolgreich gelöscht";
                     Toast.makeText(getBaseContext(), toastMsg, Toast.LENGTH_LONG).show();
                 }
             }

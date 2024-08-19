@@ -3,11 +3,11 @@ package com.example.intervalltimerfrontend;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -15,12 +15,15 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
+import com.example.intervalltimerfrontend.Adapter.ExerciseAdapter;
 import com.example.intervalltimerfrontend.Dialog.ExerciseDialog;
 import com.example.intervalltimerfrontend.Model.Exercise;
-
+import com.example.intervalltimerfrontend.Service.ApiClient;
+import com.example.intervalltimerfrontend.Service.Response.ServiceResponse;
 import com.example.intervalltimerfrontend.databinding.ActivityMainBinding;
-
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,14 +32,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements ExerciseDialog.CreateExerciseDialogListener {
+
+public class MainActivity extends AppCompatActivity implements ExerciseAdapter.ClickedItem, ExerciseDialog.CreateExerciseDialogListener {
 
     private final String EXERCISEDETAILKEY = "DATA";
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     private RecyclerView recyclerView;
-
+    private ExerciseAdapter exerciseAdapter;
     private ExerciseDialog exerciseDialog;
 
     @Override
@@ -50,8 +54,8 @@ public class MainActivity extends AppCompatActivity implements ExerciseDialog.Cr
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //
-        //getAllExercises
+        exerciseAdapter = new ExerciseAdapter(this::ClickedExercise);
+        getAllExercises();
 
 
         setSupportActionBar(binding.toolbar);
@@ -86,6 +90,30 @@ public class MainActivity extends AppCompatActivity implements ExerciseDialog.Cr
         exerciseDialog.cancel();
     }
 
+    public void getAllExercises() {
+        Call<ServiceResponse<Exercise>> exerciseList = (Call<ServiceResponse<Exercise>>) ApiClient.getExerciseService().getAll();
+        exerciseList.enqueue(new Callback<ServiceResponse<Exercise>>() {
+            @Override
+            public void onResponse(Call<ServiceResponse<Exercise>> call, Response<ServiceResponse<Exercise>> response) {
+                if(response.isSuccessful()) {
+                    List<Exercise> exerciseList;
+                    if(response.body().listResponse != null) {
+                        exerciseList = response.body().listResponse;
+                        exerciseAdapter.setData(exerciseList);
+                        recyclerView.setAdapter(exerciseAdapter);
+                    } else {
+                        exerciseList = new ArrayList<>();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ServiceResponse<Exercise>> call, Throwable t) {
+                Log.e("failure", t.getLocalizedMessage());
+            }
+        });
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -115,17 +143,64 @@ public class MainActivity extends AppCompatActivity implements ExerciseDialog.Cr
                 || super.onSupportNavigateUp();
     }
 
-
-
-
+    @Override
+    public void ClickedExercise(Exercise exercise) {
+        //
+    }
 
     public void saveExercise(String name, int repCount, int lapTime, int lapBreaktime, int startCountdown) {
         Exercise createdExercise = new Exercise(name, repCount, lapTime, lapBreaktime, startCountdown);
-        //...
+        Call<ServiceResponse<Exercise>> save = ApiClient.getExerciseService().save(createdExercise);
+        save.enqueue(new Callback<ServiceResponse<Exercise>>() {
+            @Override
+            public void onResponse(Call<ServiceResponse<Exercise>> call, Response<ServiceResponse<Exercise>> response) {
+                if(response.isSuccessful()) {
+                    getAllExercises();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ServiceResponse<Exercise>> call, Throwable t) {
+                Log.e("At exercise save: ", t.getLocalizedMessage());
+            }
+        });
+    }
+
+    public void deleteExercise(Exercise exercise) {
+        long id = exercise.getId();
+        Call<ServiceResponse<Exercise>> deleteCall = ApiClient.getExerciseService().delete(id);
+        deleteCall.enqueue(new Callback<ServiceResponse<Exercise>>() {
+            @Override
+            public void onResponse(Call<ServiceResponse<Exercise>> call, Response<ServiceResponse<Exercise>> response) {
+                if(response.isSuccessful()) {
+                    getAllExercises();
+                    String toastMsg = "Übung " + exercise.getName() + " wurde erfolgreich gelöscht";
+                    Toast.makeText(getBaseContext(), toastMsg, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ServiceResponse<Exercise>> call, Throwable t) {
+                Log.e("At exercise delete: ", t.getLocalizedMessage());
+            }
+        });
     }
 
     public void editExercise(Exercise editedExercise) {
-        //...
+        Call<ServiceResponse<Exercise>> save = ApiClient.getExerciseService().save(editedExercise);
+        save.enqueue(new Callback<ServiceResponse<Exercise>>() {
+            @Override
+            public void onResponse(Call<ServiceResponse<Exercise>> call, Response<ServiceResponse<Exercise>> response) {
+                if(response.isSuccessful()) {
+                    getAllExercises();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ServiceResponse<Exercise>> call, Throwable t) {
+                Log.e("At exercise edit: ", t.getLocalizedMessage());
+            }
+        });
     }
 
 }

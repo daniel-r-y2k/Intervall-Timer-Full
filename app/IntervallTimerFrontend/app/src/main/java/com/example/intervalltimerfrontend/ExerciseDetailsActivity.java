@@ -147,8 +147,8 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
                 mediaPlayer.start();
 
                 if(isStartCountdownFinished) {
-                    // Repetition is only counting up after breaks
-                    currentRepetition = isBreakMode ? currentRepetition+1 : currentRepetition;
+                    //Repetition only counts up after exercise NOT after breaks
+                    currentRepetition = isBreakMode ? currentRepetition : currentRepetition+1;
 
                     // Adjusting the isBreakMode Flag
                     isBreakMode = !isBreakMode;
@@ -173,6 +173,7 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
                 updateCountDownText();
             }
         }.start();
+
         timerRunning = true;
         buttonStartPause.setText(getString(R.string.pause));
         buttonReset.setVisibility(View.INVISIBLE);

@@ -21,4 +21,12 @@
     <string name="check_data">Überprüfen Sie die eingegebenen Daten</string>
 
     <string name="successfully_deleted_exercise">Übung %1$s wurde erfolgreich gelöscht</string>
+    <string name="opening_exercise">Übung %1$s wird geöffnet</string>
+
+    <string name="repcount">Aktuelle Runde</string>
+    <string name="pause">Pause</string>
+    <string name="start">Start</string>
+    <string name="get_ready">Machen Sie sich bereit!</string>
+
+    <string name="exerciseDetailKey">DATA</string>
 </resources>

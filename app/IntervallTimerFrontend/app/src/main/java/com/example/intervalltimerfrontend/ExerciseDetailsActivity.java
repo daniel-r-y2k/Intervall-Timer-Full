@@ -1,22 +1,19 @@
 package com.example.intervalltimerfrontend;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.fragment.NavHostFragment;
 
-import android.app.ActionBar;
-import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.PowerManager;
+
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.List;
+
 import java.util.Locale;
 
 import com.example.intervalltimerfrontend.Model.Exercise;
@@ -24,11 +21,8 @@ import com.example.intervalltimerfrontend.Model.Exercise;
 public class ExerciseDetailsActivity extends AppCompatActivity {
 
     // Constants
-    private final String EXERCISEDETAILKEY = "DATA";
-    private final String REPCOUNT = "Aktuelle Runde ";
     private final long COUNTDOWNINTERVAL = 1000;
-    private final String PAUSE = "Pause";
-    private final String START = "Start";
+
 
     // UI
     private TextView textViewName, textViewRepCount, textViewCountDown, textViewUserNotification;
@@ -47,6 +41,8 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
     private CountDownTimer countDownTimer;
     private boolean timerRunning;
     private long lapTimeLeftInMillis = 0;
+
+    MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +64,7 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if(intent.getExtras() != null) {
-            currentExercise = (Exercise) intent.getSerializableExtra(EXERCISEDETAILKEY);
+            currentExercise = (Exercise) intent.getSerializableExtra(getString(R.string.exerciseDetailKey));
 
             // Assign values
             // Exercise Name
@@ -79,7 +75,7 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
             lapTimeLeftInMillis = convertSecToMillis(currentExercise.getStartCountdown());
 
             // Initial Value for Repetition Count
-            textViewRepCount.setText(REPCOUNT + "1");
+            textViewRepCount.setText(getString(R.string.repcount) + " 1");
         }
 
         //Buttons
@@ -136,6 +132,8 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
             togglePauseMode();
         }
 
+        mediaPlayer = MediaPlayer.create(this, R.raw.ring_1_1);
+
         countDownTimer = new CountDownTimer(lapTimeLeftInMillis, COUNTDOWNINTERVAL) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -144,6 +142,10 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
             }
             @Override
             public void onFinish() {
+                //play sound here test
+                if(mediaPlayer.isPlaying()) mediaPlayer.stop();
+                mediaPlayer.start();
+
                 if(isStartCountdownFinished) {
                     // Repetition is only counting up after breaks
                     currentRepetition = isBreakMode ? currentRepetition+1 : currentRepetition;
@@ -153,12 +155,12 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
 
                     if(currentRepetition <= currentExercise.getRepCount()) {
                         // Adjusting the RepetitionCount Text
-                        String repCount = REPCOUNT + Integer.toString(currentRepetition);
+                        String repCount = getString(R.string.repcount) + " " + Integer.toString(currentRepetition);
                         textViewRepCount.setText(repCount);
                         timerRunning = false;
                         startTimer();
                     } else {
-                        buttonStartPause.setText(START);
+                        buttonStartPause.setText(getString(R.string.start));
                         buttonStartPause.setVisibility(View.INVISIBLE);
                         buttonReset.setVisibility(View.VISIBLE);
                         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -172,7 +174,7 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
             }
         }.start();
         timerRunning = true;
-        buttonStartPause.setText(PAUSE);
+        buttonStartPause.setText(getString(R.string.pause));
         buttonReset.setVisibility(View.INVISIBLE);
     }
 
@@ -183,7 +185,7 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
         if(isBreakMode) {
             layout.setBackgroundResource(R.drawable.gradient_background_red);
             timeInMillis = isPauseMode ? lapTimeLeftInMillis : convertSecToMillis(currentExercise.getLapBreakTime());
-            textViewUserNotification.setText("PAUSE!");
+            textViewUserNotification.setText(getString(R.string.pause) + "!");
             textViewUserNotification.setVisibility(View.VISIBLE);
 
         } else {
@@ -212,7 +214,7 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
         layout.setBackgroundResource(R.drawable.gradient_background_yellow);
         countDownTimer.cancel();
         timerRunning = false;
-        buttonStartPause.setText(START);
+        buttonStartPause.setText(getString(R.string.start));
         buttonReset.setVisibility(View.VISIBLE);
     }
 
@@ -231,9 +233,9 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
         buttonReset.setVisibility(View.INVISIBLE);
         buttonStartPause.setVisibility(View.VISIBLE);
         layout.setBackgroundResource(R.drawable.gradient_background_blue);
-        textViewUserNotification.setText("Machen Sie sich bereit!");
+        textViewUserNotification.setText(getString(R.string.get_ready));
         textViewUserNotification.setVisibility(View.VISIBLE);
-        textViewRepCount.setText(REPCOUNT + Integer.toString(currentRepetition));
+        textViewRepCount.setText(getString(R.string.repcount) + Integer.toString(currentRepetition));
     }
 
     /**

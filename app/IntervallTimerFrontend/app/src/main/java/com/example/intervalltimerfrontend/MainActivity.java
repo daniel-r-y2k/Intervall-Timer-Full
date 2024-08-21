@@ -36,8 +36,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ExerciseAdapter.ClickedItem, ExerciseDialog.CreateExerciseDialogListener {
 
-    private final String EXERCISEDETAILKEY = "DATA";
-
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     private RecyclerView recyclerView;
@@ -146,10 +144,10 @@ public class MainActivity extends AppCompatActivity implements ExerciseAdapter.C
 
     @Override
     public void ClickedExercise(Exercise exercise) {
-        String toastMsg = "Übung " + exercise.getName() + " wird geöffnet";
+        String toastMsg = getString(R.string.opening_exercise, exercise.getName());
         Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
         Intent exerciseDetailsIntent = new Intent(this, ExerciseDetailsActivity.class)
-                .putExtra(EXERCISEDETAILKEY, exercise);
+                .putExtra(getString(R.string.exerciseDetailKey), exercise);
         startActivity(exerciseDetailsIntent);
     }
     public void saveExercise(String name, int repCount, int lapTime, int lapBreaktime, int startCountdown) {
@@ -206,5 +204,6 @@ public class MainActivity extends AppCompatActivity implements ExerciseAdapter.C
             }
         });
     }
+
 
 }

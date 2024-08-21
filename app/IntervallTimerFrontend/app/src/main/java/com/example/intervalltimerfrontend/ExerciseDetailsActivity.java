@@ -41,6 +41,7 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
     private CountDownTimer countDownTimer;
     private boolean timerRunning;
     private long lapTimeLeftInMillis = 0;
+    private boolean lastRound = false;
 
     MediaPlayer mediaPlayer;
 
@@ -132,7 +133,13 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
             togglePauseMode();
         }
 
-        mediaPlayer = MediaPlayer.create(this, R.raw.ring_1_1);
+        if(lastRound){
+            mediaPlayer = MediaPlayer.create(this, R.raw.ring_3);
+        }
+        else{
+            mediaPlayer = MediaPlayer.create(this, R.raw.ring_1_1);
+        }
+
 
         countDownTimer = new CountDownTimer(lapTimeLeftInMillis, COUNTDOWNINTERVAL) {
             @Override
@@ -142,7 +149,7 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
             }
             @Override
             public void onFinish() {
-                //play sound here test
+
                 if(mediaPlayer.isPlaying()) mediaPlayer.stop();
                 mediaPlayer.start();
 
@@ -158,7 +165,11 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
                         String repCount = getString(R.string.repcount) + " " + Integer.toString(currentRepetition);
                         textViewRepCount.setText(repCount);
                         timerRunning = false;
+
                         startTimer();
+                        if(currentRepetition == currentExercise.getRepCount()){
+                            lastRound = true;
+                        }
                     } else {
                         buttonStartPause.setText(getString(R.string.start));
                         buttonStartPause.setVisibility(View.INVISIBLE);
@@ -168,9 +179,11 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
                 } else {
                     textViewUserNotification.setVisibility(View.INVISIBLE);
                     isStartCountdownFinished = true;
+
                     startTimer();
                 }
                 updateCountDownText();
+
             }
         }.start();
 

@@ -1,7 +1,11 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/NgBK_mOW)
-# Projekttitel
+# Intervall-Timer
 
 ## Projektbeschreibung
+Die geplante Android-App ist ein Intervall-Timer. Die Kernfunktionalität ist das Aufrufen von
+Intervall-Timern, welche zuvor vom Benutzer individuell konfiguriert und gespeichert
+werden. Die Konfiguration der Übung (Exercise) soll Timer-Variablen wie beispielsweise
+Start-Countdown, Rundenanzahl, Ausführungszeit der Übung, Pausenzeit und einen AlarmSound enthalten.
 
 ### Projektziele
 
@@ -19,13 +23,51 @@
 
 ### Vorstellung
 
-[Beschreiben Sie hier die einzelnen Teammitglieder mit Namen, E-Mail-Adresse und Github-Nutzernamen.]
+Daniel Rindin:
+E-Mail:  daniel.rindin@stud-mail.uni-wuerzburg.de
+GitHub:  daniel1r  (Aus irgendeinem Grund werden die Commits als "Daniel Rindin", anstelle des GitHub Namens "daniel1r" angezeigt)
+
+Daniel Rataj:
+E-Mail:  daniel.rindin@stud-mail.uni-wuerzburg.de
+GitHub:  Daniel-Rataj
+
+Mehmet Tan:
+E-Mail:  m.tan@hm.edu
+GitHub:  Metanhm
 
 ### Zuständigkeiten
 
-[Nennen Sie mindestens eine Komponente Ihrer Anwendung, die in wesentlichen Teilen vom jeweiligen Teammitglied entwickelt wurde.]
+Die einzelnen Issues sind detailierter in den entsprechenden Issues in GitHub definiert.
+
+Daniel Rindin:
+Issue #1: Übungsübersicht erstellen
+Issue #4: Exercise Model
+Issue #5: ExerciseDialog(Fragment)
+Issue #11: Initialisierung des Frontends 
+Issue #14: Implementierung der Klingeltonwiedergabe (Abspielen von Sounds und Musik)
+
+Daniel Rataj:
+Issue #6: ExerciseRepository
+Issue #7: ExerciseLogic
+Issue #8: ExerciseController
+Issue #9: DataAccess ExerciseModel
+Issue #10: DataTransfer ExerciseModel
+Issue #12: Initialisierung des Backends
+Issue #13: Notification (Interaktiv)
+Issue #15: Daten verschlüsselt versenden (HTTPS)
+
+Mehmet Tan:
+Issue #3: Service und API-Client
+Issue #2: Übungsdetailseite (Intervall-Timer)
+Issue#18: Tabbing (Swipe to change screen)
+
 
 ## Guidelines zur Nutzung dieses Repositorys
+
+Das Backend und Frontend sind in unserer Lösung entkoppelt voneinander. 
+Zum starten des Backends führen Sie die Datei "abschlussprojekt-ddm\app\IntervallTimerBackend\src\main\java\intervall_timer_backend\Application.java" in einem anderen Editor als Android Studio aus (z.B. Visual Studio Code).
+Das Frontend wird wie gewohnt in Android Studio ausgeführt.
+Alle Funktionalitäten des Intervall Timers funktionieren nur, wenn das Backend ausgeführt ist und eine entsprechende Verbindung (über localhost) besteht.
 
 ### Allgemeine Hinweise und Vorgaben
 

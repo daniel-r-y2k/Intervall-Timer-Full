@@ -2,27 +2,43 @@ package com.example.intervalltimerfrontend;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import java.util.Locale;
 
+import com.example.intervalltimerfrontend.Helper.NotificationHelper;
 import com.example.intervalltimerfrontend.Model.Exercise;
 
 public class ExerciseDetailsActivity extends AppCompatActivity {
 
     // Constants
     private final long COUNTDOWNINTERVAL = 1000;
-
+    private final BroadcastReceiver resetReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Reset Timer on receiving the message
+            resetTimer();
+        }
+    };
 
     // UI
     private TextView textViewName, textViewRepCount, textViewCountDown, textViewUserNotification;
@@ -45,10 +61,12 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
 
     MediaPlayer mediaPlayer;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+       //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_detail);
@@ -64,7 +82,8 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
         layout = findViewById(R.id.timer_layout);
 
         Intent intent = getIntent();
-        if(intent.getExtras() != null) {
+
+        if(intent != null && intent.hasExtra(getString(R.string.exerciseDetailKey))) {
             currentExercise = (Exercise) intent.getSerializableExtra(getString(R.string.exerciseDetailKey));
 
             // Assign values
@@ -77,6 +96,9 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
 
             // Initial Value for Repetition Count
             textViewRepCount.setText(getString(R.string.repcount) + " 1");
+        }
+        else {
+            Log.e("ExerciseDetailsActivity", "Exercise is null");
         }
 
         //Buttons
@@ -101,6 +123,26 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
             }
         });
         updateCountDownText();
+
+        // Create NotificationChannel
+        NotificationHelper.createNotificationChannel(this);
+
+        // Check if Action "ACTION_RESET_TIMER" was executed
+        if (getIntent().getAction() != null && getIntent().getAction().equals("RESET_TIMER_ACTION")) {
+            resetTimer();
+        }
+
+        // Register BroadcastReceiver
+        IntentFilter filter = new IntentFilter("RESET_TIMER_ACTION");
+        registerReceiver(resetReceiver, filter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // unregister BroadcastReceiver, if Activity is closed (destroyed)
+        unregisterReceiver(resetReceiver);
     }
 
     private long convertSecToMillis(int lapTime) {
@@ -170,11 +212,15 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
                         if(currentRepetition == currentExercise.getRepCount()){
                             lastRound = true;
                         }
-                    } else {
+                    } else { // Finished Exercise (All Intervals are finished)
+                        //UI Adjustments
                         buttonStartPause.setText(getString(R.string.start));
                         buttonStartPause.setVisibility(View.INVISIBLE);
                         buttonReset.setVisibility(View.VISIBLE);
                         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+                        //Show Notification
+                        NotificationHelper.showTimerFinishedNotification(ExerciseDetailsActivity.this);
                     }
                 } else {
                     textViewUserNotification.setVisibility(View.INVISIBLE);
@@ -250,6 +296,9 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
         textViewUserNotification.setText(getString(R.string.get_ready));
         textViewUserNotification.setVisibility(View.VISIBLE);
         textViewRepCount.setText(getString(R.string.repcount) + Integer.toString(currentRepetition));
+
+        //Toast Notification
+        Toast.makeText(this, "Timer zurückgesetzt", Toast.LENGTH_SHORT).show();
     }
 
     /**

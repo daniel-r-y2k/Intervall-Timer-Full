@@ -27,6 +27,7 @@
     <string name="pause">Pause</string>
     <string name="start">Start</string>
     <string name="get_ready">Machen Sie sich bereit!</string>
+    <string name="reset_timer">Timer zurückgesetzt</string>
 
     <string name="exerciseDetailKey">DATA</string>
 </resources>

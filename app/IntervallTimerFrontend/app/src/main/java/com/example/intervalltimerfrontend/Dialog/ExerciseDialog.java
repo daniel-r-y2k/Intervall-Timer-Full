@@ -64,7 +64,7 @@ public class ExerciseDialog extends AppCompatDialogFragment {
     }
 
     private void saveExerciseInCreationMode() {
-        dialogTitle = String.valueOf(R.string.new_exercise_dialog_title);
+        dialogTitle = getString(R.string.new_exercise_dialog_title);
 
         String name = textInputNewExerciseName.getEditText().getText().toString();
 
@@ -84,7 +84,7 @@ public class ExerciseDialog extends AppCompatDialogFragment {
     }
 
     private void saveExerciseInEditMode() {
-        dialogTitle = String.valueOf(R.string.edit_exercise_dialog_title);
+        dialogTitle = getString(R.string.edit_exercise_dialog_title);
 
         String name = textInputNewExerciseName.getEditText().getText().toString();
         currentExercise.setName(name);
@@ -132,10 +132,10 @@ public class ExerciseDialog extends AppCompatDialogFragment {
         String name = textInputNewExerciseName.getEditText().getText().toString().trim();
 
         if(name.isEmpty()) {
-            textInputNewExerciseName.setError(String.valueOf(R.string.error_field_empty));
+            textInputNewExerciseName.setError(getString(R.string.error_field_empty));
             return false;
         } else if(name.isEmpty() || name.length() > 50) {
-            textInputNewExerciseName.setError(String.valueOf(R.string.error_long_name));
+            textInputNewExerciseName.setError(getString(R.string.error_long_name));
             return false;
         } else {
             textInputNewExerciseName.setError(null);
@@ -147,10 +147,10 @@ public class ExerciseDialog extends AppCompatDialogFragment {
         String repCount = textInputNewExerciseRepCount.getEditText().getText().toString().trim();
 
         if(repCount.isEmpty()) {
-            textInputNewExerciseRepCount.setError(String.valueOf(R.string.error_field_empty));
+            textInputNewExerciseRepCount.setError(getString(R.string.error_field_empty));
             return false;
         } else if(Integer.parseInt(repCount) > 100) {
-            textInputNewExerciseRepCount.setError(String.valueOf(R.string.error_big_number));
+            textInputNewExerciseRepCount.setError(getString(R.string.error_big_number));
             return false;
         } else {
             textInputNewExerciseRepCount.setError(null);
@@ -162,10 +162,10 @@ public class ExerciseDialog extends AppCompatDialogFragment {
         String lapTime = textInputNewExerciseLapTime.getEditText().getText().toString().trim();
 
         if(lapTime.isEmpty()) {
-            textInputNewExerciseLapTime.setError(String.valueOf(R.string.error_field_empty));
+            textInputNewExerciseLapTime.setError(getString(R.string.error_field_empty));
             return false;
         } else if(Integer.parseInt(lapTime) > 3600) {
-            textInputNewExerciseLapTime.setError(String.valueOf(R.string.error_big_number));
+            textInputNewExerciseLapTime.setError(getString(R.string.error_big_number));
             return false;
         } else {
             textInputNewExerciseLapTime.setError(null);
@@ -177,10 +177,10 @@ public class ExerciseDialog extends AppCompatDialogFragment {
         String lapBreakTime = textInputNewExerciseLapBreakTime.getEditText().getText().toString().trim();
 
         if(lapBreakTime.isEmpty()) {
-            textInputNewExerciseLapBreakTime.setError(String.valueOf(R.string.error_field_empty));
+            textInputNewExerciseLapBreakTime.setError(getString(R.string.error_field_empty));
             return false;
         } else if(Integer.parseInt(lapBreakTime) > 3600) {
-            textInputNewExerciseLapBreakTime.setError(String.valueOf(R.string.error_big_number));
+            textInputNewExerciseLapBreakTime.setError(getString(R.string.error_big_number));
             return false;
         } else {
             textInputNewExerciseLapBreakTime.setError(null);
@@ -192,10 +192,10 @@ public class ExerciseDialog extends AppCompatDialogFragment {
         String lapTime = textInputNewExerciseStartCountdown.getEditText().getText().toString().trim();
 
         if(lapTime.isEmpty()) {
-            textInputNewExerciseStartCountdown.setError(String.valueOf(R.string.error_field_empty));
+            textInputNewExerciseStartCountdown.setError(getString(R.string.error_field_empty));
             return false;
         } else if(Integer.parseInt(lapTime) > 10) {
-            textInputNewExerciseStartCountdown.setError(String.valueOf(R.string.error_big_number));
+            textInputNewExerciseStartCountdown.setError(getString(R.string.error_big_number));
             return false;
         } else {
             textInputNewExerciseStartCountdown.setError(null);
@@ -218,7 +218,7 @@ public class ExerciseDialog extends AppCompatDialogFragment {
             getDialog().dismiss();
             return;
         } else {
-            Toast.makeText(getContext(), String.valueOf(R.string.check_data), Toast.LENGTH_SHORT);
+            Toast.makeText(getContext(), getString(R.string.check_data), Toast.LENGTH_SHORT);
         }
     }
 

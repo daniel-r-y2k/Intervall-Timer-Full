@@ -9,7 +9,44 @@ Start-Countdown, Rundenanzahl, Ausführungszeit der Übung, Pausenzeit und einen
 
 ### Projektziele
 
-[Beschreiben Sie hier in einer kurzen Zusammenfassung Hintergrund, Ziele und Funktionen Ihrer Anwendung. Fügen Sie mehrere sinnvollen Screenshot ein, die den Funktionsumfang der Anwendung demonstrieren.]
+Der Android-App Intervall-Timer ist eine App, die hauptsächlich die Nutzenden bei ihren Work-out Sessions unterstützen soll. Üblicherweise werden in solch einer Session unterschiedliche Übungen für eine bestimmte Zeit, mit mehreren Wiederholungen durchgeführt. Um dies effizienter zu gestalten, dient der Intervall-Timer dazu diese Zeiten effizient zu verfolgen, sodass die Nutzenden nicht mehr mehrere Timer für jede Wiederholung stellen müssen, sondern alles in einem haben. Somit können sich die Nutzenden vollkommen auf ihr Work-out konzentrieren.
+
+Der Intervall-Timer bietet die Option anzugeben, wie viele Wiederholungen der Übungen der Timer beeinhalten soll, wie lange eine Wiederholung gehen soll und wie lange die Pause zwischen den Übungen sein soll. Zudem ist es möglich einen Countdown vor dem Start des Intervall-Timers anzugeben, um etwas Zeit zu haben sich auf die Übungen vorzubereiten bevor der Timer startet.
+
+![image](https://github.com/user-attachments/assets/57599c7d-e257-4469-a596-3539506a1b60)
+
+Die Nutzereingaben werden außerdem überprüft, um eine sinnvolle und fehlerfreie Nutzung der App zu garantieren.
+
+![image](https://github.com/user-attachments/assets/3195d4e0-86c7-4e1d-b800-9011067bb410)
+
+Die einzelnen, angelegten, Timer werden in einer Datenbank gespeichert und in der Homepage, der Übungsübersicht, angezeigt. In dieser Ansicht können die einzelnen Timer gestartet, sowie bearbeitet und entfernt werden.
+
+![image](https://github.com/user-attachments/assets/d6b30d9f-f1d2-4592-bfc7-fdbd2d33344c)
+
+Beim starten des Timers werden die Nutzenden auf eine neue Ansicht weitergeleitet, die die Hauptfunkitonalität der App, den eigentlichen Timer, liefert. Der Timer kann von hier aus gestartet werden und es läuft der eingestellte Countdown vor dem Start ab. 
+
+![image](https://github.com/user-attachments/assets/2e9dbf04-058e-4619-8330-68ce2f52df6e)
+
+Dabei werden insgesamt 3 unterschiedliche Phasen durchlaufen, die farblich unterschiedliche gekennzeichnet sind:
+
+* Blau: Countdown vor dem Start des Intervall Timers
+* Grün: Durchführung der Wiederholung
+* Rot: Pause zwischen den Wiederholungen
+
+Dadurch können die Nutzunden über einen kurzen Blick aufs Handy sofort erkennen in welcher Phase sie sich befinden, ohne das Handy in die Hand nehmen zu müssen und sich von ihrer Übung ablenken zu lassen.
+Die Aktuelle Rundenzahl wird, sowie der laufende Timer werden stets auf der Oberfläche angezeigt.
+
+![image](https://github.com/user-attachments/assets/36f13ebc-cb40-4417-9614-c25de49e9057)
+
+![image](https://github.com/user-attachments/assets/1832c80b-43fc-4c3b-8ab0-35d90ace1118)
+
+Nach dem Ende jeder Phase ertönt ein Ton, der den Nutzenden ankündigt, dass sich die Phase wechselt. Somit wird dieser Phasenwechsel den Nutzenden, sowohl über ein hörbares, als auch über ein visuelles Signal angekündigt. Dadurch wird versichert, dass die Nutzenden stets wissen, wann die Wiederholung endet und die Pause anfängt, sowie wann die Pause endet und eine neue Wiederholung endet. Zum Abschluss der kompletten Übung, nachdem alle Wiederholungen durchlaufen sind, ertönt ein anderer Ton, um den Abschluss der Übung von den Phasenwechsel zu unterschieden.
+
+Der Timer kann zudem in jeder Phase pausiert werden. In dieser Pausen-Ansicht ist es möglich den Timer zurückzusetzen und somit von neu starten zu lassen.
+
+![image](https://github.com/user-attachments/assets/c50c513f-5cfd-47aa-a3a9-33905f6ab2d9)
+
+Die Timer Ansicht kann jederzeit über den "Back" Button des Android Geräts oder durch eine Swipe Geste nach rechts verlassen werden. Dadurch wird der Timer abgebrochen und die Nutzenden landen wieder auf der Übungsübersichtsseite.
 
 ### Funktionen
 

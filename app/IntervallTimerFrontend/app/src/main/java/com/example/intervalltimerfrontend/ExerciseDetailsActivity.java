@@ -351,6 +351,6 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
     private void onSwipeRight() {
         // Perform the back action
         countDownTimer.cancel();
-        onBackPressed();
+        getOnBackPressedDispatcher().onBackPressed();
     }
 }

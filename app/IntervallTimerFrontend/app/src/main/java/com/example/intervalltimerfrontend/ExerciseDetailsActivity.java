@@ -2,9 +2,6 @@ package com.example.intervalltimerfrontend;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 
-import android.util.Log;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -132,11 +128,6 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
         // Create NotificationChannel
         NotificationHelper.createNotificationChannel(this);
 
-        // Check if Action "ACTION_RESET_TIMER" was executed
-        if (getIntent().getAction() != null && getIntent().getAction().equals("RESET_TIMER_ACTION")) {
-            resetTimer();
-        }
-
         // Register BroadcastReceiver
         IntentFilter filter = new IntentFilter("RESET_TIMER_ACTION");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -152,7 +143,7 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
         mediaPlayer.release();
 
         // unregister BroadcastReceiver, if Activity is closed (destroyed)
-        //unregisterReceiver(resetReceiver);
+        unregisterReceiver(resetReceiver);
     }
 
     private long convertSecToMillis(int lapTime) {
@@ -297,6 +288,7 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
         isBreakMode = false;
         isPauseMode = false;
         isStartCountdownFinished = false;
+        timerRunning = false;
         currentRepetition = 1;
         lastRound = false;
         // Resetting UI

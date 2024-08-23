@@ -35,7 +35,9 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             // Reset Timer on receiving the message
+            countDownTimer.cancel();
             resetTimer();
+            startTimer();
         }
     };
 

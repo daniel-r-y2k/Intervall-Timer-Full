@@ -2,9 +2,6 @@ package com.example.intervalltimerfrontend;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 
-import android.util.Log;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;

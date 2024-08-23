@@ -7,22 +7,14 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.example.intervalltimerfrontend.FirstFragment"
+        android:name="com.example.intervalltimerfrontend.MainFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
-
-        <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+        tools:layout="@layout/fragment_main">
     </fragment>
-    <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.intervalltimerfrontend.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
-
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
-    </fragment>
+    <activity
+        android:id="@+id/ExerciseDetailsActivity"
+        android:name="com.example.intervalltimerfrontend.ExerciseDetailsActivity"
+        android:label="@string/exercise_detail_label"
+        tools:layout="@layout/activity_exercise_detail">
+    </activity>
 </navigation>

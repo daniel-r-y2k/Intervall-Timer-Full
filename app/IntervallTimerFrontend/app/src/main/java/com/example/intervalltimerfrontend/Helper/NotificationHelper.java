@@ -26,7 +26,7 @@ public class NotificationHelper {
     public static void showTimerFinishedNotification(Context context) {
         // Creates the Intent for the Reset
         Intent resetIntent = new Intent(context, ResetReceiver.class);
-        resetIntent.setAction("ACTION_RESET_TIMER");
+        resetIntent.setAction("RESET_TIMER_ACTION");
         PendingIntent resetPendingIntent = PendingIntent.getBroadcast(
                 context,
                 0,

@@ -35,13 +35,13 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
 
     // Constants
     private final long COUNTDOWNINTERVAL = 1000;
-//    private final BroadcastReceiver resetReceiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            // Reset Timer on receiving the message
-//            resetTimer();
-//        }
-//    };
+    private final BroadcastReceiver resetReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Reset Timer on receiving the message
+            resetTimer();
+        }
+    };
 
     // UI
     private TextView textViewName, textViewRepCount, textViewCountDown, textViewUserNotification;
@@ -129,17 +129,17 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
         });
         updateCountDownText();
 
-//        // Create NotificationChannel
-//        NotificationHelper.createNotificationChannel(this);
-//
-//        // Check if Action "ACTION_RESET_TIMER" was executed
-//        if (getIntent().getAction() != null && getIntent().getAction().equals("RESET_TIMER_ACTION")) {
-//            resetTimer();
-//        }
-//
-//        // Register BroadcastReceiver
-//        IntentFilter filter = new IntentFilter("RESET_TIMER_ACTION");
-//        registerReceiver(resetReceiver, filter);
+        // Create NotificationChannel
+        NotificationHelper.createNotificationChannel(this);
+
+        // Check if Action "ACTION_RESET_TIMER" was executed
+        if (getIntent().getAction() != null && getIntent().getAction().equals("RESET_TIMER_ACTION")) {
+            resetTimer();
+        }
+
+        // Register BroadcastReceiver
+        IntentFilter filter = new IntentFilter("RESET_TIMER_ACTION");
+        registerReceiver(resetReceiver, filter);
     }
 
     @Override
@@ -227,8 +227,8 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
                         buttonReset.setVisibility(View.VISIBLE);
                         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-//                        //Show Notification
-//                        NotificationHelper.showTimerFinishedNotification(ExerciseDetailsActivity.this);
+                        //Show Notification
+                        NotificationHelper.showTimerFinishedNotification(ExerciseDetailsActivity.this);
                     }
                 } else {
                     textViewUserNotification.setVisibility(View.INVISIBLE);

@@ -134,7 +134,9 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
 
         // Register BroadcastReceiver
         IntentFilter filter = new IntentFilter("RESET_TIMER_ACTION");
-        registerReceiver(resetReceiver, filter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            this.registerReceiver(resetReceiver, filter, RECEIVER_NOT_EXPORTED);
+        }
     }
 
     @Override
@@ -292,6 +294,7 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
         isStartCountdownFinished = false;
         timerRunning = false;
         currentRepetition = 1;
+        lastRound = false;
         // Resetting UI
         updateCountDownText();
         buttonReset.setVisibility(View.INVISIBLE);

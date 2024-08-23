@@ -31,7 +31,7 @@ public class NotificationHelper {
                 context,
                 0,
                 resetIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_IMMUTABLE
         );
 
         // Creates and shows the notification

@@ -146,8 +146,8 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        //if(mediaPlayer.isPlaying()) mediaPlayer.stop();
-        //mediaPlayer.release();
+        if(mediaPlayer.isPlaying()) mediaPlayer.stop();
+        mediaPlayer.release();
 
         // unregister BroadcastReceiver, if Activity is closed (destroyed)
         //unregisterReceiver(resetReceiver);

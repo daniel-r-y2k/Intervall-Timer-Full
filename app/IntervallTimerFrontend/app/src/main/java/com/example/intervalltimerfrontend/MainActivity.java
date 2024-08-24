@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements ExerciseAdapter.C
     private RecyclerView recyclerView;
     private ExerciseAdapter exerciseAdapter;
     private ExerciseDialog exerciseDialog;
+    private boolean httpsActivated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +91,12 @@ public class MainActivity extends AppCompatActivity implements ExerciseAdapter.C
     }
 
     public void getAllExercises() {
-        Call<ServiceResponse<Exercise>> exerciseList = (Call<ServiceResponse<Exercise>>) ApiClient.getExerciseService().getAll();
+        Call<ServiceResponse<Exercise>> exerciseList;
+        if(httpsActivated) {
+            exerciseList = (Call<ServiceResponse<Exercise>>) ApiClient.getExerciseServiceHttps(this).getAll();
+        } else {
+            exerciseList = (Call<ServiceResponse<Exercise>>) ApiClient.getExerciseService().getAll();
+        }
         exerciseList.enqueue(new Callback<ServiceResponse<Exercise>>() {
             @Override
             public void onResponse(Call<ServiceResponse<Exercise>> call, Response<ServiceResponse<Exercise>> response) {
@@ -152,7 +158,12 @@ public class MainActivity extends AppCompatActivity implements ExerciseAdapter.C
     }
     public void saveExercise(String name, int repCount, int lapTime, int lapBreaktime, int startCountdown) {
         Exercise createdExercise = new Exercise(name, repCount, lapTime, lapBreaktime, startCountdown);
-        Call<ServiceResponse<Exercise>> save = ApiClient.getExerciseService().save(createdExercise);
+        Call<ServiceResponse<Exercise>> save;
+        if(httpsActivated) {
+            save = (Call<ServiceResponse<Exercise>>) ApiClient.getExerciseServiceHttps(this).save(createdExercise);
+        } else {
+            save = (Call<ServiceResponse<Exercise>>) ApiClient.getExerciseService().save(createdExercise);
+        }
         save.enqueue(new Callback<ServiceResponse<Exercise>>() {
             @Override
             public void onResponse(Call<ServiceResponse<Exercise>> call, Response<ServiceResponse<Exercise>> response) {
@@ -170,7 +181,12 @@ public class MainActivity extends AppCompatActivity implements ExerciseAdapter.C
 
     public void deleteExercise(Exercise exercise) {
         long id = exercise.getId();
-        Call<ServiceResponse<Exercise>> deleteCall = ApiClient.getExerciseService().delete(id);
+        Call<ServiceResponse<Exercise>> deleteCall;
+        if(httpsActivated) {
+            deleteCall = (Call<ServiceResponse<Exercise>>) ApiClient.getExerciseServiceHttps(this).delete(id);
+        } else {
+            deleteCall = (Call<ServiceResponse<Exercise>>) ApiClient.getExerciseService().delete(id);
+        }
         deleteCall.enqueue(new Callback<ServiceResponse<Exercise>>() {
             @Override
             public void onResponse(Call<ServiceResponse<Exercise>> call, Response<ServiceResponse<Exercise>> response) {
@@ -189,7 +205,12 @@ public class MainActivity extends AppCompatActivity implements ExerciseAdapter.C
     }
 
     public void editExercise(Exercise editedExercise) {
-        Call<ServiceResponse<Exercise>> save = ApiClient.getExerciseService().save(editedExercise);
+        Call<ServiceResponse<Exercise>> save;
+        if(httpsActivated) {
+            save = (Call<ServiceResponse<Exercise>>) ApiClient.getExerciseServiceHttps(this).save(editedExercise);
+        } else {
+            save = (Call<ServiceResponse<Exercise>>) ApiClient.getExerciseService().save(editedExercise);
+        }
         save.enqueue(new Callback<ServiceResponse<Exercise>>() {
             @Override
             public void onResponse(Call<ServiceResponse<Exercise>> call, Response<ServiceResponse<Exercise>> response) {

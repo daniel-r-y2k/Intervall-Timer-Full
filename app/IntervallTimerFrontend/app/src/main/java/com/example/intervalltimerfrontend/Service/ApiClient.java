@@ -63,13 +63,11 @@ public class ApiClient {
         //Https-Usage
         OkHttpClient okHttpClient = getHttpsClient(context);
 
-        Retrofit retrofit = new Retrofit.Builder()
+        return new Retrofit.Builder()
                 .baseUrl("https://localhost:8080/") // Localhost Server-URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build();
-
-        return retrofit;
     }
 
     public static OkHttpClient getHttpsClient(Context context) {

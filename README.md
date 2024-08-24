@@ -170,7 +170,9 @@ Dieses Feature ermöglicht es der App, zwischen verschiedenen Bildschirmen durch
 
 ### Demo
 
-[Verlinken Sie zum Abschluss des Projekts ein kurzes Video, in dem Sie die wesentlichen Nutzungsszenarien Ihrer Anwendung demonstrieren.]
+https://github.com/user-attachments/assets/1e91ed33-a425-4093-a645-5813f7e310cd
+
+
 
 ## Team
 

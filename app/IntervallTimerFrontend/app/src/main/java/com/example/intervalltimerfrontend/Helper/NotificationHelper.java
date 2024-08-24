@@ -38,9 +38,9 @@ public class NotificationHelper {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle("Timer abgelaufen")
-                .setContentText("Möchtest du den Timer zurücksetzen?")
+                .setContentText("Möchtest du den Timer neu starten?")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .addAction(R.drawable.ic_reset, "Zurücksetzen", resetPendingIntent);
+                .addAction(R.drawable.ic_reset, "Neu starten", resetPendingIntent);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 

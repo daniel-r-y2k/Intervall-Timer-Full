@@ -49,8 +49,119 @@ Der Timer kann zudem in jeder Phase pausiert werden. In dieser Pausen-Ansicht is
 Die Timer Ansicht kann jederzeit über den "Back" Button des Android Geräts oder durch eine Swipe Geste nach rechts verlassen werden. Dadurch wird der Timer abgebrochen und die Nutzenden landen wieder auf der Übungsübersichtsseite.
 
 ### Funktionen
+#### Daten verschlüsselt versenden (HTTPS, SSL)
+Dieses Feature stellt sicher, dass die Kommunikation zwischen der Android-App und dem Backend-Server über eine sichere HTTPS-Verbindung erfolgt. Es verwendet SSL/TLS-Zertifikate zur Verschlüsselung der Datenübertragung. Hier wird erklärt, wie dieses Feature implementiert ist und welche Dateien und Konfigurationen dabei beteiligt sind.
 
-[Beschreiben Sie die Funktionen ihrer App. Beziehen Sie sich dabei auf den Anforderungskatalog und stellen Sie eine Verbindung zu den entsprechneden Files oder Directories her.]
+##### 1. Backend-Konfiguration
+###### 1.1 Keystore erstellen
+* Für die HTTPS-Kommunikation wird im Backend (Spring Boot) ein SSL-Zertifikat benötigt. Der Keystore `keystore.p12` wird im Backend-Projekt im folgenden Pfad abgelegt: `app/IntervallTimerBackend/src/main/resources/keystore.p12`
+
+###### 1.2 Konfiguration in `application.properties`
+* In der `application.properties`-Datei des Backend-Projekts sind die HTTPS-Konfigurationen definiert. Diese Konfigurationen legen fest, dass der Server HTTPS auf Port 8443 verwendet und den Keystore für die SSL-Verschlüsselung verwendet.
+
+###### 1.3 Sicherheitskonfiguration in `SecurityConfig.java`
+* In der `SecurityConfig`-Klasse wird konfiguriert, dass alle eingehenden Anfragen über HTTPS erfolgen müssen. Diese Klasse stellt sicher, dass die Sicherheitsanforderungen für HTTPS in der Spring Boot-Anwendung durchgesetzt werden.
+
+##### 2. Frontend-Konfiguration
+###### 2.1 Zertifikat für HTTPS
+* Im Frontend-Projekt wurde aus dem Keystore `keystore.p12` ein Zertifikat generiert und im folgenden Pfad abgelegt: `app/IntervallTimerFrontend/app/src/main/res/raw/certificate.cert`
+* Dieses Zertifikat wird verwendet, um eine vertrauenswürdige HTTPS-Verbindung in der Android-App aufzubauen.
+
+###### 2.2 Flag für HTTPS in `MainActivity.java`
+* In der `MainActivity.java` wurde ein Flag `httpsActivated` hinzugefügt, das steuert, ob die App HTTP oder HTTPS verwendet. Je nach Wert dieses Flags wird beim Zugriff auf den `ExerciseService` entweder eine HTTP- oder HTTPS-Verbindung verwendet.
+
+###### 2.3 API-Client in `ApiClient.java`
+* Die `ApiClient`-Klasse ist verantwortlich für die Konfiguration der Netzwerkverbindungen. Sie bietet Methoden sowohl für HTTP- als auch für HTTPS-Verbindungen:
+* HTTP-Client: Wird über die Methode `getClient()` konfiguriert und verwendet grundlegende Authentifizierung sowie optionales Logging.
+* HTTPS-Client: Die Methode `getClientHttps(Context context)` konfiguriert einen HTTPS-Client, der das Zertifikat aus den Ressourcen verwendet. Diese Konfiguration umfasst das Laden des Zertifikats, das Erstellen eines `KeyStore`, das Einrichten eines `TrustManager` und eines `SSLContext` für sichere Verbindungen.
+* Die Methoden `getExerciseServiceHttps(Context context)` und `getHttpsClient(Context context)` ermöglichen die Verwendung von HTTPS
+
+#### Wiederverwendbare Layoutbausteine: Fragments
+Dieses Feature nutzt Fragments als wiederverwendbare Layoutbausteine, um verschiedene UI-Komponenten modular und flexibel zu gestalten. In der `MainActivity` wird das `MainFragment` eingebunden, das eine eigenständige UI-Komponente darstellt und unabhängig von anderen Teilen der App verwendet werden kann. Hier wird erklärt, wie dieses Feature implementiert ist und welche Dateien beteiligt sind.
+
+###### 1. `MainFragment.java`:
+* Aufbau der UI: Das `MainFragment` ist ein Fragment, das die Benutzeroberfläche für die Anzeige der Übungen in einer `RecyclerView` verwaltet. Es nutzt Data Binding (`FragmentMainBinding`), um die UI-Elemente mit den entsprechenden Layout-Resourcen zu verbinden.
+* Lifecycle-Management: Das Fragment implementiert die `onCreateView`- und `onDestroyView`-Methoden, um die Benutzeroberfläche zu erstellen und aufzuräumen, wenn das Fragment angezeigt bzw. entfernt wird.
+###### 2. `fragment_main.xml`:
+Layout-Struktur: Das Layout des Fragments besteht aus einer vertikalen `LinearLayout`, die eine `RecyclerView` enthält. Diese `RecyclerView` wird zur Anzeige der Übungen verwendet.
+
+#### Einfacher Adapter
+Dieses Feature ermöglicht es der App, Daten effizient in einer Liste anzuzeigen. Der `ExerciseAdapter` wird verwendet, um die Daten der Übungen in einer `RecyclerView` darzustellen. Hier wird erklärt, wie dieses Feature implementiert ist und welche Dateien beteiligt sind.
+
+###### 1. Die `ExerciseAdapter.java`-Klasse verwaltet die Darstellung der Übungsdaten in der `RecyclerView`. Ihre Hauptaufgaben sind:
+* Bereitstellung von Layout-Elementen: Der `ExerciseAdapter` erstellt und bindet die Layout-Elemente für jede einzelne Übung in der Liste. In der Methode `onCreateViewHolder` wird das Layout für jedes Listen-Element bereitgestellt, indem ein neues `ExerciseAdapterVH`-Objekt (ViewHolder) erstellt wird. Dieses Objekt dient als Container für die UI-Elemente.
+* Datenbindung: Die Methode `onBindViewHolder` wird verwendet, um die Übungsdaten an die einzelnen Layout-Elemente zu binden. Hier wird der Name der Übung (`exerciseName`) an das entsprechende `TextView` gebunden, sodass die Übungsinformationen korrekt angezeigt werden.
+* Klickereignisse: Der `ExerciseAdapter` implementiert die Schnittstelle `ClickedItem`, um Klickereignisse auf einzelne Listen-Elemente zu handhaben. Diese Ereignisse werden in der `MainActivity` verarbeitet, um die ausgewählte Übung zu öffnen oder zu bearbeiten. Dies geschieht durch die Methoden `ClickedExercise` für das Anzeigen der Details, `deleteExercise` für das Löschen und `openEditDialog` für das Bearbeiten von Übungen.
+* Verwaltung von Interaktionen: Der `ExerciseAdapter` ermöglicht die Bearbeitung und das Löschen von Übungen direkt aus der Liste heraus. Die entsprechenden Buttons (`deleteExercise` und `editExercise`) sind in der `ExerciseAdapterVH`-Klasse definiert und mit den entsprechenden Methoden in der `MainActivity` verbunden.
+###### 2. Die `MainActivity.java` integriert den `ExerciseAdapter` in die `RecyclerView`. Ihre Hauptaufgaben sind:
+* Initialisierung des Adapters: In der `MainActivity` wird eine Instanz des `ExerciseAdapter` erstellt und der `RecyclerView` zugewiesen. Dies erfolgt in der Methode `onCreate`, wo der Adapter mit der `RecyclerView` verbunden wird, um die Liste der Übungen darzustellen.
+* Datenbereitstellung: Die Methode `getAllExercises` in der `MainActivity` ruft die Übungsdaten vom Server ab und übergibt sie an den `ExerciseAdapter`. Dieser stellt die Daten dann in der `RecyclerView` dar und sorgt für eine aktuelle Anzeige, sobald neue Übungen hinzugefügt, bearbeitet oder gelöscht wurden.
+###### 3. Das Layout für ein einzelnes Listen-Element (`row_exercise.xml`) definiert das Aussehen der einzelnen Übungen in der Liste. Ihre Hauptaufgaben sind:
+* Strukturierung der UI-Elemente: Das Layout verwendet ein `CardView`-Element, um jede Übung in der Liste in einer ansprechenden Karte darzustellen.
+* Anzeige der Übungsdaten: Das `TextView`-Element mit der ID `exerciseName` zeigt den Namen der Übung an. Die Buttons `deleteExercise` und `editExercise` sind für das Löschen und Bearbeiten der jeweiligen Übung zuständig. Diese Buttons verwenden Icons (`ic_delete` und `ic_edit`) als Hintergrund, um ihre Funktionalität visuell zu verdeutlichen.
+* Interaktive Elemente: Die Buttons `deleteExercise` und `editExercise` sind interaktiv und rufen die entsprechenden Methoden in der `MainActivity` auf, wenn sie gedrückt werden.
+
+#### Intents mit Payload
+Dieses Feature ermöglicht es der App, beim Starten einer neuen Aktivität Daten an diese zu übergeben. In der `MainActivity` werden Übungen ausgewählt und deren Details an die `ExerciseDetailsActivity` übergeben, um dort weitere Informationen anzuzeigen. Hier wird erklärt, wie dieses Feature implementiert ist und welche Dateien beteiligt sind.
+
+###### 1. Die `MainActivity.java` verwaltet die Auswahl der Übung und das Senden der Übungsdaten an die `ExerciseDetailsActivity`. Ihre Hauptaufgaben sind:
+* Übungsauswahl: Wenn der Benutzer eine Übung aus der Liste auswählt, wird die Methode `ClickedExercise` aufgerufen. Diese Methode erstellt eine neue `Intent`-Instanz, um die `ExerciseDetailsActivity` zu starten.
+* Datenübergabe: In der `ClickedExercise`-Methode werden die Übungsdaten als Extra-Daten (`putExtra`) zum `Intent` hinzugefügt. Die Daten werden mithilfe eines Schlüssels (`exerciseDetailKey`) übertragen, der in den Ressourcen definiert ist.
+* Aktivitätsstart: Nach dem Hinzufügen der Extra-Daten wird die `ExerciseDetailsActivity` mit der Methode `startActivity` gestartet.
+###### 2. Die `ExerciseDetailsActivity` empfängt die übergebenen Übungsdaten und zeigt sie an. Ihre Hauptaufgaben sind:
+* Empfang der Daten: In der `onCreate`-Methode der `ExerciseDetailsActivity` wird der empfangene `Intent` abgefragt, um die übergebenen Übungsdaten zu extrahieren.
+* Anzeige der Daten: Die extrahierten Übungsdetails werden verwendet, um die entsprechenden UI-Elemente in der `ExerciseDetailsActivity` zu aktualisieren und die Informationen anzuzeigen.
+
+#### Notification interaktiv
+Dieses Feature ermöglicht es der App, eine interaktive Benachrichtigung anzuzeigen, wenn der Intervall-Timer in der `ExerciseDetailsActivity` abgelaufen ist. Die Benachrichtigung enthält eine Schaltfläche, um den Timer direkt neu zu starten. Hier wird erklärt, wie dieses Feature implementiert ist und welche Dateien beteiligt sind.
+
+###### 1. Die `ExerciseDetailsActivity.java` verwaltet den Intervall-Timer und zeigt eine Benachrichtigung an, wenn der Timer abgelaufen ist. Ihre Hauptaufgaben sind:
+* BroadcastReceiver für den Timer-Reset: Ein `BroadcastReceiver` wird definiert, um auf das Zurücksetzen des Timers zu reagieren. Wenn der Benutzer auf die Schaltfläche "Neu starten" in der Benachrichtigung klickt, wird dieser Receiver aktiviert, um den Timer zurückzusetzen und neu zu starten.
+* Erstellen des `NotificationChannels`: Beim Erstellen der `ExerciseDetailsActivity` wird ein `NotificationChannel` erstellt, um sicherzustellen, dass Benachrichtigungen auf Geräten mit Android Oreo (API 26) und höher korrekt angezeigt werden.
+* Timer-Start: Wenn der Timer abläuft, wird die Methode zur Anzeige der Benachrichtigung aufgerufen, um den Benutzer zu informieren und eine Aktion zu ermöglichen.
+
+###### 2. Die `NotificationHelper`-Klasse verwaltet die Erstellung und Anzeige der Benachrichtigung. Ihre Hauptaufgaben sind:
+* Benachrichtigung anzeigen: Diese Methode erstellt die Benachrichtigung und fügt eine "Neu starten"-Schaltfläche hinzu. Wenn der Benutzer diese Schaltfläche klickt, wird eine Broadcast-Nachricht gesendet, um den Timer zurückzusetzen.
+* Erstellen des `NotificationChannels`: Diese Methode stellt sicher, dass der `NotificationChannel` auf Geräten mit Android Oreo und höher eingerichtet ist, um Benachrichtigungen korrekt anzuzeigen.
+
+###### 3. Die `ResetReceiver`-Klasse ist ein `BroadcastReceiver`, der eine Broadcast-Nachricht sendet, wenn er eine Absicht zum Zurücksetzen des Timers empfängt. Ihre Hauptaufgaben sind:
+* Empfangsnachricht verarbeiten und eine lokale Broadcast-Nachricht versenden, die dann von der `ExerciseDetailsActivity` verarbeitet wird, um den Timer zurückzusetzen und neu zu starten.
+
+##### Selbsterstellte Custom Views
+Dieses Feature ermöglicht es der App, einen benutzerdefinierten Dialog zum Erstellen und Bearbeiten von Intervall-Timern anzuzeigen. Der Dialog bietet eine benutzerfreundliche Oberfläche zur Eingabe und Validierung von Übungsdetails. Hier wird erklärt, wie dieses Feature implementiert ist und welche Dateien beteiligt sind.
+
+###### 1. Die `ExerciseDialog.java`-Klasse implementiert den benutzerdefinierten Dialog. Ihre Hauptaufgaben sind:
+* Dialog-Erstellung und Layout: Der Dialog wird mit der `onCreateDialog`-Methode erstellt, die das Layout (`layout_dialog.xml`) aufbaut und die Eingabefelder initialisiert.
+* Eingabedaten verarbeiten: Die Klasse enthält Methoden zum Speichern und Bearbeiten von Übungsdetails. Im Erstellungsmodus werden neue Daten erfasst, im Bearbeitungsmodus werden bestehende Daten aktualisiert.
+* Validierung: Die Eingaben werden auf ihre Korrektheit überprüft, um sicherzustellen, dass keine ungültigen Daten gespeichert werden.
+###### 2. Die `layout_dialog.xml`-Datei definiert das Layout des Dialogs. Ihre Hauptaufgaben sind:
+* Eingabefelder: Die Datei enthält mehrere `TextInputLayout` und `TextInputEditText` Felder für die Eingabe von Übungsbezeichnung, Wiederholungen, Ausführungszeit, Pausenzeit und Countdown.
+* Schaltflächen: Zwei Schaltflächen zum Speichern oder Abbrechen der Eingaben sind vorhanden, die entsprechende Aktionen im Dialog auslösen.
+###### 3. Die `MainActivity.java` verwaltet die Interaktionen mit dem Dialog. Ihre Hauptaufgaben sind:
+* Dialog öffnen: Der Dialog wird entweder zur Erstellung eines neuen Intervall-Timers oder zur Bearbeitung eines bestehenden Timers aufgerufen.
+* Dialog-Listener: Die `MainActivity` implementiert den `CreateExerciseDialogListener`, um die vom Dialog zurückgegebenen Daten zu verarbeiten und entsprechende Aktionen (z.B. Speichern) durchzuführen.
+
+##### Abspielen von Sounds und Musik
+Das Feature Abspielen von Sounds und Musik wurde in der `ExerciseDetailsActivity` implementiert, um akustische Signale während der Durchführung von Übungen zu integrieren. Diese Signale helfen dem Benutzer, den Übergang zwischen verschiedenen Phasen des Trainings wie Start-Countdown, Übung und Pause zu erkennen.
+
+###### 1. Einbindung des `MediaPlayer`:
+* Der Sound wird beim Ablauf des Countdowns oder beim Übergang in eine neue Phase abgespielt. Wenn der Timer endet (`onFinish()`), wird der Sound abgespielt, um das Ende der aktuellen Runde oder Pause akustisch zu signalisieren.
+* Je nach Trainingssituation (z.B. letzte Runde) wird ein entsprechender Sound ausgewählt (`ring_3` für die letzte Runde und `ring_1_1` für reguläre Runden).
+###### 2. Lifecycle-Management:
+* Der `MediaPlayer` wird in der `onDestroy()`-Methode gestoppt und freigegeben, um Speicherlecks und unerwünschtes Abspielen von Sounds nach dem Schließen der Aktivität zu vermeiden.
+
+##### Tabbing (Swipe to Change Screen)
+Dieses Feature ermöglicht es der App, zwischen verschiedenen Bildschirmen durch Wischgesten zu navigieren. Ein Wischen nach rechts führt zurück zur vorherigen Seite, was eine flüssige und benutzerfreundliche Navigation ermöglicht. Hier wird erklärt, wie dieses Feature implementiert ist und welche Dateien beteiligt sind.
+
+###### 1. Die `ExerciseDetailsActivity.java` Klasse implementiert die Wischgesten-Navigation. Ihre Hauptaufgaben sind:
+* Gestenerkennung: Die Klasse verwendet einen `GestureDetector`, um Wischgesten auf dem Bildschirm zu überwachen. Hierbei wird die `SwipeGestureListener`-Klasse zur Erkennung von Wischbewegungen genutzt. 
+* Reaktion auf Gesten: Bei einer erkannten Wischbewegung nach rechts wird die Methode `onSwipeRight()` aufgerufen. Diese Methode stoppt den Timer und löst die Navigation zur vorherigen Ansicht aus. 
+* Interaktion: Die `onSwipeRight()`-Methode sorgt dafür, dass die `onBackPressed()`-Methode aufgerufen wird, um zur vorherigen Ansicht zurückzukehren.
+
+###### 2. Die `SwipeGestureListener` Klasse verwaltet die Gestenerkennung. Ihre Hauptaufgaben sind:
+* Wischgeste erkennen: Die Klasse erweitert `GestureDetector.SimpleOnGestureListener` und überschreibt die Methode `onFling()`, um Wischgesten zu erkennen. 
+* Wischbewegungen verarbeiten: Die `onFling()`-Methode prüft die Wischrichtung und -geschwindigkeit, um zu bestimmen, ob es sich um eine gültige Wischgeste handelt und welche Aktion ausgeführt werden soll.
+
 
 ### Demo
 

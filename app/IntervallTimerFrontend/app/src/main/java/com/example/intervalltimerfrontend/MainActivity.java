@@ -19,7 +19,6 @@ import com.example.intervalltimerfrontend.Adapter.ExerciseAdapter;
 import com.example.intervalltimerfrontend.Dialog.ExerciseDialog;
 import com.example.intervalltimerfrontend.Model.Exercise;
 import com.example.intervalltimerfrontend.Service.ApiClient;
-import com.example.intervalltimerfrontend.Service.ExerciseService;
 import com.example.intervalltimerfrontend.Service.Response.ServiceResponse;
 import com.example.intervalltimerfrontend.databinding.ActivityMainBinding;
 import retrofit2.Call;
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements ExerciseAdapter.C
     private RecyclerView recyclerView;
     private ExerciseAdapter exerciseAdapter;
     private ExerciseDialog exerciseDialog;
-    private boolean httpsActivated = false;
+    private final boolean httpsActivated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

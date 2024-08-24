@@ -46,6 +46,11 @@ Der Timer kann zudem in jeder Phase pausiert werden. In dieser Pausen-Ansicht is
 
 ![image](https://github.com/user-attachments/assets/c50c513f-5cfd-47aa-a3a9-33905f6ab2d9)
 
+Wenn der Timer durchgelaufen ist, erhalten die Nutzenden eine Notification, mit der Information, dass der Timer abgelaufen ist und der Option den Timer neu zu starten. Somit ist der Timer ebenfalls im Stand-by Modus des Handys nutzbar. Die Töne ertönen, um die Phasenwechsel anzukündigen und zum Schluss kann der Timer über die Notification neu gestartet werden. Somit muss der Timer nur zu Beginn aktiv gestartet werden und das Handy kann daraufhin in den Stand-By Modus versetzt werden, ohne die Funktionalitäten des Timers zu behindern.
+
+![image](https://github.com/user-attachments/assets/fdc167a5-ad8e-483e-8f10-0d8be3517dde)
+
+
 Die Timer Ansicht kann jederzeit über den "Back" Button des Android Geräts oder durch eine Swipe Geste nach rechts verlassen werden. Dadurch wird der Timer abgebrochen und die Nutzenden landen wieder auf der Übungsübersichtsseite.
 
 ### Funktionen

@@ -167,13 +167,6 @@ Dieses Feature ermöglicht es der App, zwischen verschiedenen Bildschirmen durch
 * Wischgeste erkennen: Die Klasse erweitert `GestureDetector.SimpleOnGestureListener` und überschreibt die Methode `onFling()`, um Wischgesten zu erkennen. 
 * Wischbewegungen verarbeiten: Die `onFling()`-Methode prüft die Wischrichtung und -geschwindigkeit, um zu bestimmen, ob es sich um eine gültige Wischgeste handelt und welche Aktion ausgeführt werden soll.
 
-
-### Demo
-
-https://github.com/user-attachments/assets/1e91ed33-a425-4093-a645-5813f7e310cd
-
-
-
 ## Team
 
 ### Vorstellung
